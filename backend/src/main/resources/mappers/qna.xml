@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.vue.mapper.QnaMapper">
+<!-- selectAll -->
+<select id="selectAll" resultType="Qna">
+	select * from qna order by qid desc;
+</select>
+
+	<!-- selectOne -->
+	<select id="selectOne" parameterType="string" resultType="Qna">
+		select * from qna where qid=#{qid}
+	</select>
+	<!-- insert -->
+	<insert id="insert" parameterType="Qna">
+		insert into qna(username, title, content) 
+					values(#{username}, #{title}, #{content})
+	</insert>
+	<!-- delete -->
+	<delete id="delete" parameterType="string">
+		delete from qna where qid=#{qid}
+	</delete>
+	<!-- update -->
+	<update id="update" parameterType="string">
+		update qna 
+		set title = #{qna.title},
+			content = #{qna.content}
+		where qid=#{qid}
+	</update>
+	
+	<update id="updateHit" parameterType="string">
+	update qna
+	set hit = hit + 1
+	where qid = #{qid}
+	</update>
+	
+	<select id="selectAllReply" parameterType="string" resultType="QnaReply">
+	select * from qna_reply where qid=#{qid}
+	</select>
+	
+	<insert id="insertReply" parameterType="string" >
+	insert into qna_reply(qid, username, content) values(#{qid}, #{reply.username}, #{reply.content});
+	</insert>
+	
+</mapper>

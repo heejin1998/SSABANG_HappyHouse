@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.ssafy.vue.mapper.MemberMapper">
+	<select id="isUser" parameterType="String" resultType="Integer">
+		select count(*)
+		from user
+		where kid = #{kid}
+	</select>
+	
+	<select id="checkUsername" parameterType="String" resultType="Integer">
+		select count(*)
+		from user
+		where username=#{username}
+	</select>
+	
+	<insert id="registerUser" parameterType="User">
+		insert into user(kid, username, nickname, email, address, regdate) 
+		values(#{kid}, #{username},#{nickname}, #{email}, #{address}, now());
+	</insert>
+	
+	<select id="retrieveUser" resultType="User">
+		select * from user
+	</select>
+	
+	<select id="detailUser" parameterType="String" resultType="User">
+		select * from user where kid=#{kid};
+	</select>
+	
+	<delete id="deleteUser" parameterType="String">
+		delete from user where kid=#{kid}
+	</delete>
+	
+	<update id="updateUser" parameterType="String">
+		update user 
+		set username=#{user.username},
+			address=#{user.address}
+		where kid=#{kid}
+	</update>
+	
+	<select id="userFavor" parameterType="String"  resultType="Favor">
+	select f.fid, f.kid, f.aptCode, info.aptName from favor f join houseinfo info
+		where f.aptCode=info.aptCode and f.kid=#{kid} order by regdate desc
+	</select>
+	
+	<insert id="insertFavor" parameterType="String">
+		insert into favor(kid, aptCode) values(#{kid}, #{aptCode})
+	</insert>
+	
+	<delete id="deleteFavor"  parameterType="String">
+		delete from favor where kid=#{kid} and aptCode = #{aptCode}
+	</delete>
+</mapper>
